@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MainTextStyle">
+        <item name="color">@color/blackText</item>
+    </style>
+
+    <style name="GrayTextStyle">
+        <item name="color">@color/grayText</item>
+    </style>
+
+    <style name="ClickableTextStyle">
+        <item name="color">@color/clickableText</item>
+    </style>
+</resources>

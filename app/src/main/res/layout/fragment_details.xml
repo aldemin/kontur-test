@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.widget.Toolbar
+        android:id="@+id/fr_details_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/fr_details_name"
+        style="@style/RegularTextView.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Aleksande Demin"/>
+
+    <TextView
+        android:id="@+id/fr_details_phone_number"
+        style="@style/RegularTextView.Clickable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="+123456789"/>
+
+    <TextView
+        android:id="@+id/fr_details_temperament"
+        style="@style/RegularTextView.Gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="phlegmatic"/>
+
+    <TextView
+        android:id="@+id/fr_details_educationPeriod"
+        style="@style/RegularTextView.Gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="04.08.1993-15.07.2021"/>
+
+    <TextView
+        android:id="@+id/fr_details_biography"
+        style="@style/RegularTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="This is my humble biography"/>
+
+</LinearLayout>
