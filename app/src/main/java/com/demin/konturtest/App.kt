@@ -1,9 +1,9 @@
 package com.demin.konturtest
 
 import android.app.Application
-import com.demin.konturtest.common.AppComponent
-import com.demin.konturtest.common.AppModule
-import com.demin.konturtest.common.DaggerAppComponent
+import com.demin.konturtest.common.di.AppComponent
+import com.demin.konturtest.common.di.AppModule
+import com.demin.konturtest.common.di.DaggerAppComponent
 
 class App : Application() {
 

@@ -12,7 +12,7 @@ class DetailsFragmentViewModel(app: Application) : AndroidViewModel(app) {
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            require(modelClass == MainFragmentViewModel::class)
+            require(modelClass == MainFragmentViewModel::class.java)
             return DetailsFragmentViewModel(app) as T
         }
     }

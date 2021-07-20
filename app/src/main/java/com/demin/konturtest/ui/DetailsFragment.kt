@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.demin.konturtest.R
 import com.demin.konturtest.common.appComponent
+import com.demin.konturtest.common.entity.Contact
 import com.demin.konturtest.ui.viewmodel.DetailsFragmentViewModel
 import javax.inject.Inject
 
@@ -37,31 +38,39 @@ class DetailsFragment : Fragment() {
         initViews(view)
     }
 
-    private fun initToolbar(view:View) {
+    private fun initToolbar(view: View) {
         activity?.let { activity ->
             activity.apply {
                 setActionBar(view.findViewById(R.id.fr_details_toolbar))
-                actionBar?.let {
-                    it.setDisplayHomeAsUpEnabled(true)
-                    it.setHomeButtonEnabled(true)
+                actionBar?.apply {
+                    setDisplayHomeAsUpEnabled(true)
+                    setHomeButtonEnabled(true)
                     // TODO
-                    it.title = ""
+                    title = ""
                 }
             }
         }
     }
 
-    // TODO: temporary solution for skeleton testing. will be removed
-    private fun initViews(view:View) {
-        view.findViewById<TextView>(R.id.fr_details_name).text = "Aleksande Demin"
-        view.findViewById<TextView>(R.id.fr_details_phone_number).text = "+123456789"
-        view.findViewById<TextView>(R.id.fr_details_temperament).text = "phlegmatic"
-        view.findViewById<TextView>(R.id.fr_details_educationPeriod).text = "04.08.1993-15.07.2021"
-        view.findViewById<TextView>(R.id.fr_details_biography).text = "This is my humble biography"
+    private fun initViews(view: View) {
+        val contact = requireArguments().getParcelable(CONTACT_KEY) as Contact?
+        view.findViewById<TextView>(R.id.fr_details_name).text = contact?.name
+        view.findViewById<TextView>(R.id.fr_details_phone_number).text = contact?.phone
+        view.findViewById<TextView>(R.id.fr_details_temperament).text = contact?.temperament?.value
+        // TODO
+        view.findViewById<TextView>(R.id.fr_details_educationPeriod).text =
+            "${contact?.educationPeriod?.start} - ${contact?.educationPeriod?.end}"
+        view.findViewById<TextView>(R.id.fr_details_biography).text = contact?.biography
     }
 
     companion object {
+        private const val CONTACT_KEY = "Contact Key"
+
         @JvmStatic
-        fun newInstance() = DetailsFragment()
+        fun newInstance(contact: Contact) = DetailsFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(CONTACT_KEY, contact)
+            }
+        }
     }
 }
