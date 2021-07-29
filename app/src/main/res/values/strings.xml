@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">KonturTest</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">KonturTest</string>
     <string name="search">Search</string>
+    <string name="empty_string">""</string>
+    <string name="education_period_concat">%1$s - %2$s</string>
 </resources>

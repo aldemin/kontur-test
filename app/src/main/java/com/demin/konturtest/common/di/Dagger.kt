@@ -1,10 +1,14 @@
 package com.demin.konturtest.common.di
 
 import android.app.Application
+import android.content.Context
+import androidx.room.Room
+import com.demin.konturtest.common.api.ApiSourceData
 import com.demin.konturtest.common.api.ContactListApi
-import com.demin.konturtest.ui.DetailsFragment
+import com.demin.konturtest.common.repositopy.contactDB.ContactsDB
 import com.demin.konturtest.ui.MainActivity
 import com.demin.konturtest.ui.MainFragment
+import dagger.Binds
 import dagger.Component
 import dagger.Module
 import dagger.Provides
@@ -13,35 +17,45 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Qualifier
 
-@Component(modules = [AppModule::class, RetrofitModule::class, SourceUrlModule::class])
+@Component(
+    modules = [
+        AppModule::class, RetrofitModule::class,
+        SourceUrlModule::class, ContactDataBaseModule::class]
+)
 interface AppComponent {
-    fun inject(mainActivity: MainActivity)
+    fun inject(activity: MainActivity)
     fun inject(fragment: MainFragment)
-    fun inject(fragment: DetailsFragment)
+}
+
+@Module(includes = [AppBindModule::class])
+class AppModule(private val app: Application) {
+
+    @Provides
+    fun provideApplication() = app
+
 }
 
 @Module
-class AppModule(private val app: Application) {
-    @Provides
-    fun provideApplication() = app
+interface AppBindModule {
+
+    @Binds
+    fun bindContext(app: Application): Context
+
 }
 
 @Module
 class RetrofitModule {
 
     @Provides
-    fun provideRetrofitApi() = Retrofit.Builder()
+    fun provideRetrofitApi(sourceData: ApiSourceData) = Retrofit.Builder()
         .client(
             OkHttpClient.Builder()
                 .addInterceptor(HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
                 }).build()
         )
-        // TODO: 19.07.2021
-        .baseUrl("https://raw.githubusercontent.com/SkbkonturMobile/" +
-                "mobile-test-droid/master/json/generated-01.json/")
+        .baseUrl(sourceData.baseURL)
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
@@ -49,38 +63,18 @@ class RetrofitModule {
 }
 
 @Module
-class SourceUrlModule {
+class SourceUrlModule(private val mBaseURL: String, private val mSources: List<String>) {
 
-    // TODO: workaround
-    private val firstSourceUrl = "https://raw.githubusercontent.com/SkbkonturMobile/" +
-            "mobile-test-droid/master/json/generated-01.json"
-
-    private val secondSourceUrl = "https://raw.githubusercontent.com/SkbkonturMobile/" +
-            "mobile-test-droid/master/json/generated-02.json"
-
-    private val thirdSourceUrl = "https://raw.githubusercontent.com/SkbkonturMobile/" +
-            "mobile-test-droid/master/json/generated-03.json"
-
-    @FirstSource
-    fun provideFirstSourceUrl() = firstSourceUrl
-
-    @SecondSource
-    fun provideSecondSourceUrl() = secondSourceUrl
-
-    @ThirdSource
-    fun provideThirdSourceUrl() = thirdSourceUrl
+    @Provides
+    fun provideContactListSourceData() = ApiSourceData(mBaseURL, mSources)
 
 }
 
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-annotation class FirstSource
+@Module
+class ContactDataBaseModule() {
 
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-annotation class SecondSource
+    @Provides
+    fun provideContactDataBase(app: Application) =
+        Room.databaseBuilder(app, ContactsDB::class.java, "Contact").build()
 
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-annotation class ThirdSource
-// TODO: end of todo
+}

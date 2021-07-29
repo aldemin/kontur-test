@@ -2,11 +2,17 @@ package com.demin.konturtest.common.entity
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity
 data class EducationPeriod(
     val start: String,
     val end: String
 ) : Parcelable {
+
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
 
     constructor(parcel: Parcel) : this(parcel.readString()!!, parcel.readString()!!)
 

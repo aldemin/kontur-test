@@ -2,14 +2,17 @@ package com.demin.konturtest.common.entity
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity
 data class Contact(
-    val id: String,
+    @PrimaryKey val id: String,
     val name: String,
     val phone: String,
     val height: Float,
     val biography: String,
-    val temperament: Temperament,
+    val temperament: String,
     val educationPeriod: EducationPeriod
 ) : Parcelable {
 
@@ -19,7 +22,7 @@ data class Contact(
         parcel.readString()!!,
         parcel.readFloat(),
         parcel.readString()!!,
-        parcel.readSerializable()!! as Temperament,
+        parcel.readString()!!,
         parcel.readParcelable<EducationPeriod>(ClassLoader.getSystemClassLoader())!!
     )
 
@@ -32,12 +35,13 @@ data class Contact(
             writeString(phone)
             writeFloat(height)
             writeString(biography)
-            writeSerializable(temperament)
+            writeString(temperament)
             writeParcelable(educationPeriod, 0)
         }
     }
 
     companion object {
+
         @JvmField
         final val CREATOR: Parcelable.Creator<Contact> = object : Parcelable.Creator<Contact> {
             override fun createFromParcel(source: Parcel): Contact {
